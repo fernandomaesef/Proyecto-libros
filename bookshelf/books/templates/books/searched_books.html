@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="book_buttons">    
+
+        {%for book in books%}
+
+        <div class="single_button">
+
+        <form action="{%url 'book_detail'%}" method="get">
+
+            <input type="hidden" name="book_id" value="{{book.id}}">
+
+            <button type="submit">
+                <img src="{{book.thumbnail}}" alt="">
+                <small>{{book.title}}</small>
+            </button>
+
+        </form>
+
+        </div>
+
+        {%endfor%}
+
+    </div>
+</body>
+</html>

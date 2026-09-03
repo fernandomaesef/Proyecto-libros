@@ -12,8 +12,7 @@ def get_books(query):
 
     params = {
         'q': query,
-        'key': api_key,
-        'maxResults':5
+        'key': api_key
     }
 
     response = requests.get(url,params)

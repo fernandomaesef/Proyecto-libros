@@ -26,10 +26,24 @@ def book_detail(request):
         return redirect('index')
 
     book = svs.search_book(book_id)
-    
+
     context = {
         'book' : book
     }
 
 
     return render(request,'books/book_detail.html',context)
+
+def book_search(request):
+
+    query = request.GET.get('query')
+    books = svs.get_books(query)
+
+    if not query:
+        return redirect('index')
+
+    context = {
+        'books' : books,
+        'query' : query
+    }
+    return render(request,'books/searched_books.html',context)
