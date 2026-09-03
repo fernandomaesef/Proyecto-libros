@@ -6,6 +6,11 @@
     <title>Pagina de Inicio</title>
 </head>
 <body>
+
+    <div class="session_links">
+        <a href="{%url 'register'%}">Registrarse</a>
+    </div>
+    
     <form action="{% url 'book_search' %}" method="get">
         <input 
         type="text"
