@@ -43,8 +43,16 @@
                     for (const book of data.books) {
                         const div = document.createElement('div');
                         div.innerHTML = `
-                        <img src="${book.thumbnail}" width="50">
-                        <span>${book.title}</span>
+                        <form method="get" action="{% url 'book_detail'%}">
+                            <input type="hidden" name="book_id" value="${book.id}">
+                            <button type='submit'>
+
+                                <img src="${book.thumbnail}" width="50">
+                                <span>${book.title}</span>
+
+                            </button>
+
+                        </form>
                         `;
 
                         suggestions.appendChild(div);

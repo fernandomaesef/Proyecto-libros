@@ -73,3 +73,31 @@ def search_books(query):
                 }
         )
     return books
+
+def search_book(book_id):
+
+    api_key = os.getenv('GOOGLE_BOOKS_API_KEY')
+    url = f"https://www.googleapis.com/books/v1/volumes/{book_id}"
+
+    params = {
+        'key': api_key
+    }
+
+    response = requests.get(url,params=params)
+    data = response.json()
+
+    volumeInfo = data.get('volumeInfo',{})
+
+    book = {
+        'id' : data.get('id'),
+        'title' : volumeInfo.get('title'),
+        'authors' : volumeInfo.get('authors',[]),
+        'published_date' : volumeInfo.get('publishedDate'),
+        'description' : volumeInfo.get('description'),
+        'pages' : volumeInfo.get('pageCount'),
+        'categories' : volumeInfo.get('categories', []),
+        'thumbnail' : volumeInfo.get('imageLinks',{}).get('thumbnail'),
+        'preview_link' : volumeInfo.get('previewLink'),
+    }
+
+    return book

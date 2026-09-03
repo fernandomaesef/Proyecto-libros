@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from . import services as svs
 from django.http import JsonResponse
 
@@ -17,3 +17,19 @@ def suggestions(request):
     books = svs.search_books(search)
 
     return JsonResponse({'books': books})
+
+def book_detail(request):
+
+    book_id = request.GET.get('book_id')
+
+    if not book_id:
+        return redirect('index')
+
+    book = svs.search_book(book_id)
+    
+    context = {
+        'book' : book
+    }
+
+
+    return render(request,'books/book_detail.html',context)

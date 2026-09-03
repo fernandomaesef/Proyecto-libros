@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{book.title}}</title>
+</head>
+<body>
+
+<div class="book_detail">
+    <div class="image">
+        <img src="{{book.thumbnail}}" alt="portada de {{book.title}}">
+    </div>
+
+    <div class="info">
+
+        <h1>{{book.title}}</h1>
+        <small>
+            Paginas: {{book.pages}}|
+            Autor/es:
+            {%for author in book.authors%}
+            {{author}}
+            {%endfor%}
+            |
+            Publicado el {{book.published_date}}
+        </small>
+
+        <div class="description">
+            {{book.description|safe}}
+        </div>
+
+        <div class="preview_link">
+            <a href="{{book.preview_link}}" target="_blank">Leer muestra</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
