@@ -3,9 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pagina de Inicio</title>
 </head>
 <body>
-    <h1>Prueba 01</h1>
+    <form action="" method="get">
+        <input 
+        type="text"
+        name="query"
+        id="books-search"
+        placeholder="Busqueda"
+        autocomplete="off"
+        >
+        <button type="submit">Buscar</button>
+    </form>
+    <div id="suggestions"></div>
+    <script>
+        const searchInput = document.getElementById('books-search');
+        const suggestions = document.getElementById('suggestions');
+
+        let timer;
+
+        searchInput.addEventListener('input',function(){
+            clearTimeout(timer);
+
+            const query = searchInput.value.trim();
+
+            if (query.length < 3) {
+                suggestions.innerHTML = ''
+                return;
+            }
+            
+            timer = setTimeout(function(){
+                fetch(`/suggestions/?query=${encodeURIComponent(query)}`)
+                .then(Response=>Response.json())
+                .then(data=>{
+
+                    suggestions.innerHTML = '';
+
+                    for (const book of data.books) {
+                        const div = document.createElement('div');
+                        div.innerHTML = `
+                        <img src="${book.thumbnail}" width="50">
+                        <span>${book.title}</span>
+                        `;
+
+                        suggestions.appendChild(div);
+                        
+                    }
+                });
+            },400);
+        });
+    </script>
 </body>
 </html>
