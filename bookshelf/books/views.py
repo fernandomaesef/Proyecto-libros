@@ -4,7 +4,9 @@ from django.http import JsonResponse
 
 # Create your views here.
 def index(request):
+
     context = {}
+    
     return render(request,'books/index.html',context)
 
 def suggestions(request):

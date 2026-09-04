@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.auth.decorators import login_required
 
-from .forms import RegisterForm
+from .forms import RegisterForm, UsernameChangeForm
 from .tokens import account_activation_token
 
 # Create your views here.
@@ -88,3 +89,28 @@ def activate(request,uidb64,token):
         request,
         'users/activation_invalid.html'
     )
+
+@login_required
+def username_change(request):
+
+    if request.method == 'POST':
+        form = UsernameChangeForm(
+            request.POST,
+            instance=request.user
+        )
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('index')
+
+    else:
+        form = UsernameChangeForm(
+            instance=request.user
+        )
+
+        context = {
+            'form':form
+        }
+
+        return render(request,'users/change_username.html',context)

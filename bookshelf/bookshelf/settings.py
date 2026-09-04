@@ -108,6 +108,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Logout/Login settings
+
+LOGOUT_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'index'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/

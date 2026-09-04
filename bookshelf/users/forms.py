@@ -20,3 +20,9 @@ class RegisterForm(UserCreationForm):
             )
 
         return email
+
+class UsernameChangeForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['username']

@@ -7,10 +7,28 @@
 </head>
 <body>
 
+    {%if not user.is_authenticated%}
     <div class="session_links">
         <a href="{%url 'register'%}">Registrarse</a>
+        <a href="{%url 'login'%}">Iniciar Sesión</a>
     </div>
-    
+    {%endif%}
+    {%if user.is_authenticated%}
+        <div class="user_menu">
+            <button>{{user.username}}</button>
+            <div class="dropdown">
+                <a href="#">Mi biblioteca</a>
+                <a href="{%url 'change_username'%}">Cambiar usuario</a>
+                <a href="{%url 'password_change'%}">Cambiar contraseña</a>
+
+                <form action="{%url 'logout'%}" method="post">
+                    {% csrf_token%}
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        </div>
+    {%endif%}
+
     <form action="{% url 'book_search' %}" method="get">
         <input 
         type="text"
