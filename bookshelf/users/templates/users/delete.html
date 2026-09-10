@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="form_user_delete">
+
+        <form method="post">
+
+            {%csrf_token%}
+
+            <label for="password">Introduzca su contraseña</label>
+            <input type="password" name="password", id="password" required>
+
+            {%if error%}
+                <p>{{error}}</p>
+            {%endif%}
+
+            <button type="submit">
+                Eliminar cuenta
+            </button>
+            
+        </form>
+    </div>
+</body>
+</html>

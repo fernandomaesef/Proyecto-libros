@@ -16,5 +16,6 @@ urlpatterns = [
             ),
         name='password_change'
         ),
-        path('change_username',views.username_change,name='change_username')
+    path('change_username',views.username_change,name='change_username'),
+    path('delete/',views.delete,name='delete')
 ]

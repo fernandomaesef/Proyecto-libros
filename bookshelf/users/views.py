@@ -114,3 +114,18 @@ def username_change(request):
         }
 
         return render(request,'users/change_username.html',context)
+
+@login_required
+def delete(request):
+    error = None
+
+    if request.method == 'POST':
+        password = request.get.POST('password')
+
+        if request.user.check_password(password):
+            request.user.delete()
+            return redirect('index')
+        else:
+            error = 'Contraseña incorrecta'
+
+    return render(request,'users/delete.html',{'error': error})

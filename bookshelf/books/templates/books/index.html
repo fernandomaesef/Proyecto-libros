@@ -20,6 +20,7 @@
                 <a href="#">Mi biblioteca</a>
                 <a href="{%url 'change_username'%}">Cambiar usuario</a>
                 <a href="{%url 'password_change'%}">Cambiar contraseña</a>
+                <a href="{%url 'delete'%}">Borrar cuenta</a>
 
                 <form action="{%url 'logout'%}" method="post">
                     {% csrf_token%}
