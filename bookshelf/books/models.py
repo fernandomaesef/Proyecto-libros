@@ -17,9 +17,9 @@ class Book(models.Model):
 class UserBook(models.Model):
 
     class Status(models.TextChoices):
-        ADDED = "added","Added"
-        READING ="reading","Reading"
-        READ = "read","Read"
+        WANT_TO_READ = "want_to_read","Para leer"
+        READING ="reading","Leyendo"
+        READ = "read","Leído"
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -28,7 +28,7 @@ class UserBook(models.Model):
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
-        default=Status.ADDED
+        default=Status.WANT_TO_READ
         )
     
     date_added = models.DateField(auto_now_add=True)
@@ -48,7 +48,7 @@ class UserBook(models.Model):
             ),
             models.CheckConstraint(
                 condition=(
-                    models.Q(status__in=["added","reading","read"])
+                    models.Q(status__in=["want_to_read","reading","read"])
                 ),
                 name='status_restriction'
             )

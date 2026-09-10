@@ -22,7 +22,8 @@
             {{author}}
             {%endfor%}
             |
-            Publicado el {{book.published_date}}
+            Publicado el {{book.published_date}}|
+            ISBN: {{book.isbn}}
         </small>
 
         <div class="description">
@@ -36,6 +37,51 @@
     </div>
 
 </div>
+<div class="add_to_library">
 
+    {%if user.is_authenticated%}
+
+    <form method="post" action="{%url 'add_to_library'%}" id="add_book_form">
+
+        {%csrf_token%}
+
+        <input type="hidden" name="book_id" value="{{book.id}}">
+
+        <input type="radio" name="book_status" id="book_status" value="want_to_read">Para leer
+        <input type="radio" name="book_status" id="book_status" value="reading">Leyendo
+        <input type="radio" name="book_status" id="book_status" value="read">Leído
+
+
+        <button type="submit">
+            Añadir a la biblioteca
+        </button>
+
+    </form>
+
+    <p id="library_message"></p>
+
+    {%endif%}
+
+</div>
+
+<script>
+    const form = document.getElementById("add_book_form")
+    const message = document.getElementById("library_message")
+
+    form.addEventListener("submit",function(event){
+        event.preventDefault();
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method : "POST",
+            body : formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            message.textContent = data.message
+        });
+    });
+</script>
 </body>
 </html>

@@ -86,6 +86,19 @@ def search_book(book_id):
     data = response.json()
 
     volumeInfo = data.get('volumeInfo',{})
+    identifiers = volumeInfo.get('industryIdentifiers',[])
+
+    isbn = None
+    for identifier in identifiers:
+        if identifier.get('type') == 'ISBN_13':
+            isbn = identifier.get('identifier')
+            break
+
+    if isbn is None:
+        for identifier in identifiers:
+            if identifier.get('type') == 'ISBN_10':
+                isbn = identifier.get('identifier')
+                break
 
     book = {
         'id' : data.get('id'),
@@ -97,6 +110,7 @@ def search_book(book_id):
         'categories' : volumeInfo.get('categories', []),
         'thumbnail' : volumeInfo.get('imageLinks',{}).get('thumbnail'),
         'preview_link' : volumeInfo.get('previewLink'),
+        'isbn' : isbn
     }
 
     return book
