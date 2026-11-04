@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from . import services as svs
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from . import services as svs
 from .models import Book, UserBook
 
 # Create your views here.
@@ -86,3 +87,18 @@ def add_to_library(request):
             'message' : 'Libro añadido a tu biblioteca'
         })
 
+@login_required
+def user_library(request):
+
+    user_books = UserBook.objects.filter(user=request.user).order_by('-date_added')
+
+    paginator = Paginator(user_books,6)
+
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
+
+    context = {
+        'page_obj' : page_obj
+    }
+
+    return render(request,'books/user_library.html',context)

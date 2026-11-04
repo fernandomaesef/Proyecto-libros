@@ -9,7 +9,7 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     isbn = models.CharField(max_length=13,unique=True,null=True,blank=True)
     published_date = models.DateField(null=True,blank=True)
-    cover_url = models.URLField(blank=True)
+    cover_url = models.URLField(blank=True, max_length=500)
 
     def __str__(self):
         return self.title
