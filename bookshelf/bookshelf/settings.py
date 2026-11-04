@@ -78,7 +78,25 @@ WSGI_APPLICATION = 'bookshelf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
+USE_NEON = os.getenv('USE_NEON', 'False').lower() == 'true'
+
+if USE_NEON:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('NEON_DB_NAME'),
+        'USER': os.getenv('NEON_DB_USER'),
+        'PASSWORD': os.getenv('NEON_DB_PASSWORD'),
+        'HOST': os.getenv('NEON_DB_HOST'),
+        'PORT': os.getenv('NEON_DB_PORT','5432'),
+        'OPTIONS': {
+            'sslmode' : 'require',
+        }
+    }
+}
+
+else:
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DB_NAME'),
@@ -88,6 +106,8 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT')
     }
 }
+
+
 
 
 # Password validation

@@ -11,11 +11,12 @@
     {%for book in page_obj %}
     <div class="single_book">
         <p>{{book.book.title}}</p>
-        <img src="{{book.userbook.cover_url}}" alt="">
-        <small>{{book.book.status}}</small>
+        <img src="{{book.book.cover_url}}" alt="">
+        <small>{{book.status}}</small>
     </div>
     {% endfor %}
 </div>
+
 <div class="page_links">
     {% if page_obj.has_previus %}
     <a href="?page={{page_obj.previus_page_number}}">Anterior</a>
@@ -27,5 +28,6 @@
     <a href="?page={{page_obj.next_page_number}}">Siguiente</a>
 {%endif%}
 </div>
+<p></p>
 </body>
 </html>
