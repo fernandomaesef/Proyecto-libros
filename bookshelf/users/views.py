@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .forms import RegisterForm, UsernameChangeForm
 from .tokens import account_activation_token
+from bookshelf import settings
 
 # Create your views here.
 
@@ -41,19 +42,37 @@ def register(request):
                 )
             )
 
-            send_mail(
-                "Verifica tu cuenta",
-                f"Pulsa este enlace para verificar tu cuenta:\n\n{activation_url}",
-                None,
-                [user.email],
-                fail_silently=False
+            message = EmailMultiAlternatives(
+                subject='Activa tu cuenta bookself',
+                body=f"Valide su cuenta aqui{activation_url}",
+                from_email=settings.DEFAULT_FROM_EMAIL, 
+                to=[user.email]
+
             )
 
+            html = f"""
+                    <h2>Bienvenido a Bookshelf</h2>
+
+                    <p>Gracias por registrarte.</p>
+
+                    <p>Pulsa el siguiente botón para activar tu cuenta:</p>
+
+                    <a href="{activation_url}"
+                    style="background-color: #3498db;
+                    color: white;
+                    padding: 12px 24px;
+                    text-decoration: none;
+                    border-radius: 5px;">
+                    Activar cuenta
+                    </a>
+                    """
+            message.attach_alternative(html,'text/html')
+            message.send()
             return render(
                 request,
                 'users/check_email.html',
                 {'email':user.email}
-            )
+                )
     else:
         form = RegisterForm()
 
@@ -120,7 +139,8 @@ def delete(request):
     error = None
 
     if request.method == 'POST':
-        password = request.get.POST('password')
+        password = request.POST.get('password')
+        print(password)
 
         if request.user.check_password(password):
             request.user.delete()
